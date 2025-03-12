@@ -12,9 +12,7 @@ public class Order {
     private List<OrderItem> items;
     private Double totalPrice;
 
-    public Order(String customerUuid,
-                 String sellerUuid,
-                 List<OrderItem> items) {
+    public Order(String customerUuid, String sellerUuid, List<OrderItem> items) {
         this.customerUuid = customerUuid;
         this.sellerUuid = sellerUuid;
         this.items = items;
@@ -23,5 +21,8 @@ public class Order {
     public Order() {
     }
 
-    ;
+    // interpolates customer uuid with hashcode to ensure no collision
+    public String orderDeduplicationCode() {
+        return String.format("%s.%s", customerUuid, this.hashCode());
+    }
 }
