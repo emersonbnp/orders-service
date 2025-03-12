@@ -1,4 +1,4 @@
-package com.challenge.orders.service.domain.orders.models;
+package com.challenge.domain.orders.domain.orders.models;
 
 public enum OrderStatusEnum {
     CREATED("Created"),

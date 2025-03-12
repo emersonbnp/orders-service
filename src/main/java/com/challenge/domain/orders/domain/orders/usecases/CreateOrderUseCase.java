@@ -18,7 +18,7 @@ public class CreateOrderUseCase {
         this.orderRepository = orderRepository;
     }
 
-    public String execute(Order order) {
-        return null;
+    public Order execute(Order order) {
+        return order;
     }
 }
