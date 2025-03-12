@@ -7,6 +7,7 @@ import com.challenge.domain.orders.domain.orders.repository.OrderRepository;
 import com.challenge.domain.services.CacheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +15,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TestCreateOrderUseCase {
 
@@ -33,19 +33,20 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(
-                new OrderItem(UUID.randomUUID().toString(), 1, 1.0)
-        );
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
         var order = new Order(customerUuid, sellerUuid, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        var processedOrder = useCase.execute(order);
+        useCase.execute(order);
 
         // Then
-        assertEquals(1, processedOrder.getTotalPrice());
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        verify(orderRepository).saveOrder(orderCaptor.capture());
+
+        assertEquals(1, orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -53,19 +54,20 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(
-                new OrderItem(UUID.randomUUID().toString(), 2, 1.0)
-        );
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
         var order = new Order(customerUuid, sellerUuid, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        var processedOrder = useCase.execute(order);
+        useCase.execute(order);
 
         // Then
-        assertEquals(2, processedOrder.getTotalPrice());
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        verify(orderRepository).saveOrder(orderCaptor.capture());
+
+        assertEquals(2, orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -73,20 +75,20 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(
-                new OrderItem(UUID.randomUUID().toString(), 1, 1.0),
-                new OrderItem(UUID.randomUUID().toString(), 2, 1.0)
-        );
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0), new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
         var order = new Order(customerUuid, sellerUuid, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        var processedOrder = useCase.execute(order);
+        useCase.execute(order);
 
         // Then
-        assertEquals(3, processedOrder.getTotalPrice());
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        verify(orderRepository).saveOrder(orderCaptor.capture());
+
+        assertEquals(3, orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -94,9 +96,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(
-                new OrderItem(UUID.randomUUID().toString(), 1, 1.0)
-        );
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
         var order = new Order(customerUuid, sellerUuid, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(true);
