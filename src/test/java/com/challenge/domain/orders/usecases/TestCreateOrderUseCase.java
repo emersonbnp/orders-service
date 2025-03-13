@@ -40,7 +40,7 @@ public class TestCreateOrderUseCase {
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        useCase.execute(order, null);
+        useCase.execute(order);
 
         // Then
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
@@ -61,7 +61,7 @@ public class TestCreateOrderUseCase {
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        useCase.execute(order, null);
+        useCase.execute(order);
 
         // Then
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
@@ -82,7 +82,7 @@ public class TestCreateOrderUseCase {
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        useCase.execute(order, null);
+        useCase.execute(order);
 
         // Then
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
@@ -104,12 +104,12 @@ public class TestCreateOrderUseCase {
 
         // When and Then
         assertThrows(DuplicateOrderException.class, () -> {
-            useCase.execute(order, null);
+            useCase.execute(order);
         });
     }
 
     @Test
-    public void should_set_a_duplication_check_ttl() {
+    public void should_set_a_duplication_check() {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
@@ -122,12 +122,12 @@ public class TestCreateOrderUseCase {
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When
-        useCase.execute(order, expectedDuplicationCheckTTLHours);
+        useCase.execute(order);
 
         // Then
         ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Integer> ttlCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(cacheService).set(keyCaptor.capture(), ttlCaptor.capture());
+        verify(cacheService).set(keyCaptor.capture());
 
         assertEquals(expectedDuplicationKey, keyCaptor.getValue());
         assertEquals(expectedDuplicationCheckTTLHours, ttlCaptor.getValue());

@@ -19,14 +19,14 @@ public class CreateOrderUseCase {
         this.orderRepository = orderRepository;
     }
 
-    public String execute(Order order, Integer duplicationCheckTTLHours) {
+    public String execute(Order order) {
         logger.debug("Creating order: {}", order);
         var deduplicationCode = order.orderDeduplicationCode();
         if (cacheService.exists(deduplicationCode)) {
             logger.warn("Order already exists.");
             throw new DuplicateOrderException(String.format("Duplicate order for customer %s", order.getCustomerUuid()));
         }
-        cacheService.set(deduplicationCode, duplicationCheckTTLHours);
+        cacheService.set(deduplicationCode);
 
         var totalPrice = order.getItems()
                 .stream()
