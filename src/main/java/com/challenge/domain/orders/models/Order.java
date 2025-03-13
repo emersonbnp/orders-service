@@ -1,4 +1,4 @@
-package com.challenge.domain.orders.domain.orders.models;
+package com.challenge.domain.orders.models;
 
 import lombok.Data;
 

@@ -1,9 +1,9 @@
-package com.challenge.domain.orders.domain.orders.usecases;
+package com.challenge.domain.orders.usecases;
 
 import com.challenge.domain.exceptions.DuplicateOrderException;
-import com.challenge.domain.orders.domain.orders.models.Order;
-import com.challenge.domain.orders.domain.orders.models.OrderItem;
-import com.challenge.domain.orders.domain.orders.repository.OrderRepository;
+import com.challenge.domain.orders.models.Order;
+import com.challenge.domain.orders.models.OrderItem;
+import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.domain.services.CacheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
