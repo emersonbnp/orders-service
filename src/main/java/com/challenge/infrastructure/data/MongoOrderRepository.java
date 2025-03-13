@@ -2,10 +2,12 @@ package com.challenge.infrastructure.data;
 
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.repository.OrderRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class MongoOrderRepository implements OrderRepository {
 
     private final MongoOrderDAO orderDAO;
