@@ -3,6 +3,9 @@ package com.challenge.infrastructure.data;
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.repository.OrderRepository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class MongoOrderRepository implements OrderRepository {
 
     private final MongoOrderDAO orderDAO;
@@ -13,11 +16,16 @@ public class MongoOrderRepository implements OrderRepository {
 
     @Override
     public String saveOrder(Order order) {
-        return "";
+        var orderEntity = OrderMapper.INSTANCE.toOrderEntity(order);
+
+        return orderDAO.save(orderEntity)
+                .getOrderUuid()
+                .toString();
     }
 
     @Override
-    public Order getOrderById(String orderId) {
-        return null;
+    public Optional<Order> getOrderById(String orderId) {
+        var orderEntity = orderDAO.findById(UUID.fromString(orderId));
+        return orderEntity.map(OrderMapper.INSTANCE::fromOrderEntity);
     }
 }
