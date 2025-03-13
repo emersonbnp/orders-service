@@ -1,6 +1,6 @@
 package com.challenge.domain.orders.usecases;
 
-import com.challenge.domain.exceptions.DuplicateOrderException;
+import com.challenge.domain.orders.exceptions.DuplicateOrderException;
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.models.OrderItem;
 import com.challenge.domain.orders.repository.OrderRepository;

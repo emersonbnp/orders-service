@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class OrderItem {
-    private String productId;
+    private String productUuid;
     private Integer quantity;
     private Double price;
 
-    public OrderItem(String productId, Integer quantity, Double price) {
-        this.productId = productId;
+    public OrderItem(String productUuid, Integer quantity, Double price) {
+        this.productUuid = productUuid;
         this.quantity = quantity;
         this.price = price;
     }
