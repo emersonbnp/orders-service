@@ -90,6 +90,16 @@ services:
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_REPLICATION_FACTOR: 1
 
+  redis:
+    image: redis:latest
+    container_name: redis-cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--appendonly", "yes" ]
+    volumes:
+      - ~/redis_data:/data
+
 networks:
   mongo-compose-network:
     driver: bridge
