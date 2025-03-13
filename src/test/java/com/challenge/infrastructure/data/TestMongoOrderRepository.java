@@ -34,7 +34,7 @@ public class TestMongoOrderRepository {
         var orderUuid = mongoOrderRepository.saveOrder(order);
 
         // Then
-        assertEquals(ORDER_UUID, UUID.fromString(orderUuid));
+        assertEquals(ORDER_UUID, orderUuid);
     }
 
     @Test

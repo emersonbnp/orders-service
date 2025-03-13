@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class OrderItemEntity {
-    private UUID productUuid;
+    private String productUuid;
     private Integer quantity;
     private Double price;
 }

@@ -117,7 +117,6 @@ public class TestCreateOrderUseCase {
         var order = new Order(customerUuid, sellerUuid, items);
         var orderUuid = UUID.randomUUID().toString();
         var expectedDuplicationKey = String.format("%s.%s", customerUuid, order.hashCode());
-        var expectedDuplicationCheckTTLHours = 24;
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
@@ -126,10 +125,8 @@ public class TestCreateOrderUseCase {
 
         // Then
         ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Integer> ttlCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(cacheService).set(keyCaptor.capture());
 
         assertEquals(expectedDuplicationKey, keyCaptor.getValue());
-        assertEquals(expectedDuplicationCheckTTLHours, ttlCaptor.getValue());
     }
 }

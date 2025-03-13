@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderFixture {
-    public static final UUID ORDER_UUID = UUID.randomUUID();
-    public static final UUID CUSTOMER_UUID = UUID.randomUUID();
-    public static final UUID SELLER_UUID = UUID.randomUUID();
-    public static final UUID PRODUCT_UUID = UUID.randomUUID();
+    public static final String ORDER_UUID = UUID.randomUUID().toString();
+    public static final String CUSTOMER_UUID = UUID.randomUUID().toString();
+    public static final String SELLER_UUID = UUID.randomUUID().toString();
+    public static final String PRODUCT_UUID = UUID.randomUUID().toString();
     public static final Integer QUANTITY = 1;
     public static final Double PRICE = 1.0;
 
@@ -40,8 +40,8 @@ public class OrderFixture {
     }
 
     public static Order instanceOfOrder(
-            UUID customerUuid,
-            UUID sellerUuid,
+            String customerUuid,
+            String sellerUuid,
             List<OrderItem> orderItems
     ) {
         return new Order(
@@ -56,7 +56,7 @@ public class OrderFixture {
     }
 
     public static OrderItemEntity instaceOfOrderItemEntity(
-            UUID productUuid,
+            String productUuid,
             Integer quantity,
             Double price
     ) {
@@ -72,9 +72,9 @@ public class OrderFixture {
     }
 
     public static OrderEntity instanceOfOrderEntity(
-            UUID orderUuid,
-            UUID customerUuid,
-            UUID sellerUuid,
+            String orderUuid,
+            String customerUuid,
+            String sellerUuid,
             List<OrderItemEntity> orderItems
     ) {
         return new OrderEntity(

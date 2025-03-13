@@ -15,15 +15,15 @@ public enum OrderMapper {
                 .stream()
                 .map(o ->
                         new OrderItemEntity(
-                                UUID.fromString(o.getProductUuid()),
+                                o.getProductUuid(),
                                 o.getQuantity(),
                                 o.getPrice()
                         )
                 ).toList();
 
         return new OrderEntity(
-                UUID.fromString(order.getCustomerUuid()),
-                UUID.fromString(order.getSellerUuid()),
+                order.getCustomerUuid(),
+                order.getSellerUuid(),
                 orderItemsEntity
         );
     }
@@ -35,8 +35,8 @@ public enum OrderMapper {
                 .toList();
 
         return new Order(
-                orderEntity.getCustomerUuid().toString(),
-                orderEntity.getSellerUuid().toString(),
+                orderEntity.getCustomerUuid(),
+                orderEntity.getSellerUuid(),
                 orderItems
         );
     }

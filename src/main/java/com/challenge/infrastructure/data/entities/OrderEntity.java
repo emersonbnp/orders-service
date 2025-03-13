@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -17,16 +16,16 @@ import java.util.UUID;
 public class OrderEntity {
 
     @Id
-    private UUID orderUuid;
+    private String orderUuid;
 
-    private UUID customerUuid;
+    private String customerUuid;
 
-    private UUID sellerUuid;
+    private String sellerUuid;
 
     @Field(name = "items")
     private List<OrderItemEntity> orderItems;
 
-    public OrderEntity(UUID customerUuid, UUID sellerUuid, List<OrderItemEntity> orderItems) {
+    public OrderEntity(String customerUuid, String sellerUuid, List<OrderItemEntity> orderItems) {
         this.customerUuid = customerUuid;
         this.sellerUuid = sellerUuid;
         this.orderItems = orderItems;
