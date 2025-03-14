@@ -4,7 +4,12 @@ Orders Service is an application composed by a RESTful API and a Kafka consumer.
 
 ## Starting the application
 
-Make sure that docker is running and then start all dependencies by running the following command:
+Please, make sure you have JDK 23. Setting up the Dockerfile is in the list of improvements.
+```bash
+./gradlew bootRun 
+```
+
+Make sure that docker-compose.yaml is running and then start all dependencies by running the following command:
 
 ```bash
 docker compose up -d 
@@ -40,3 +45,4 @@ A few improvements that could be done both on API and event consumer:
 * Separate the API and event consumer in two different independently deployable modules
   * This was made easier by leveraging DDD 
   * Also, the components packages were organized so that it would be easier to split later
+* Create a Dockerfile to run the application without Java 23
