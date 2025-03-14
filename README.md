@@ -1,6 +1,18 @@
 # Orders Service
 
 Orders Service is an application composed by a RESTful API and a Kafka consumer. The API exposes endpoints to retrieve orders data and the consumer receives new orders that will be processed and stored.
+## Architecture
+
+The following diagram shows in higher level of abstraction how the systems interact with each other:
+`External Product A` publishes order requested events consumed by `Orders Service` to create new orders.
+`External Product B` then can hit `Orders Service` Restful API endpoint to fetch information about the orders.
+![](./docs/diagrams/system_context.png)
+
+The following diagram shows how the systems interact with infrastructure components:
+`External Product A` publishes messages to Kafka broker.
+`External Product B` only interacts with `Orders Service` through HTTP requests.
+`Orders Service` consumes messages from a Kafka broker, stores data in a MongoDB database and caches data in Redis cache.
+![](./docs/diagrams/components.png)
 
 ## Starting the application
 
@@ -46,3 +58,5 @@ A few improvements that could be done both on API and event consumer:
   * This was made easier by leveraging DDD 
   * Also, the components packages were organized so that it would be easier to split later
 * Create a Dockerfile to run the application without Java 23
+* Add lint configuration
+* Truncate decimal numbers
