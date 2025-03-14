@@ -62,26 +62,28 @@ services:
     command: >
       bash -c
         "sleep 5s &&
-        kafka-topics --create --topic=order_requested_event --if-not-exists --bootstrap-server=kafka-broker:19092"
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry:7.4.0
-    restart: always
-    container_name: kafka-schema-registry
-    hostname: kafka-schema-registry
-    ports:
-      - "9081:9081"
-    environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-broker:19092
-      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:9081
-    depends_on:
-      - kafka-zookeeper
-      - kafka-broker
+        kafka-topics --create --topic=order_requested_event --if-not-exists --bootstrap-server=kafka-broker:19092" &&
+        kafka-topics --create --topic=order_requested_event.DLT --if-not-exists --bootstrap-server=kafka-broker:19092"
+
+#  kafka-schema-registry:
+#    image: confluentinc/cp-schema-registry:7.4.0
+#    restart: always
+#    container_name: kafka-schema-registry
+#    hostname: kafka-schema-registry
+#    ports:
+#      - "9081:9081"
+#    environment:
+#      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-broker:19092
+#      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+#      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:9081
+#    depends_on:
+#      - kafka-zookeeper
+#      - kafka-broker
   control-center:
     image: confluentinc/cp-enterprise-control-center:latest
     depends_on:
       - kafka-broker
-      - kafka-schema-registry
+#      - kafka-schema-registry
     ports:
       - "9021:9021"
     environment:

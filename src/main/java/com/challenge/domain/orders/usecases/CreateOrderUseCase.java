@@ -19,7 +19,7 @@ public class CreateOrderUseCase {
         this.orderRepository = orderRepository;
     }
 
-    public String execute(Order order) {
+    public String execute(Order order) throws DuplicateOrderException {
         logger.debug("Creating order: {}", order);
         var deduplicationCode = order.orderDeduplicationCode();
         if (cacheService.exists(deduplicationCode)) {

@@ -21,8 +21,7 @@ public class MongoOrderRepository implements OrderRepository {
         var orderEntity = OrderMapper.INSTANCE.toOrderEntity(order);
 
         return orderDAO.save(orderEntity)
-                .getOrderUuid()
-                .toString();
+                .getOrderUuid();
     }
 
     @Override

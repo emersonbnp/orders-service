@@ -4,6 +4,7 @@ import com.challenge.domain.orders.exceptions.DuplicateOrderException;
 import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.domain.orders.usecases.CreateOrderUseCase;
 import com.challenge.domain.services.CacheService;
+import com.challenge.entrypoint.kafka.deserializers.DeserializationException;
 import com.challenge.entrypoint.kafka.events.CreateOrderEvent;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
@@ -40,9 +41,9 @@ public class OrderRequestedEventConsumer {
             new CreateOrderUseCase(cacheService, orderRepository).execute(order);
             logger.info("Order created");
             acknowledgment.acknowledge();
-        } catch (DuplicateOrderException e) {
+        } catch (DuplicateOrderException | DeserializationException e) {
+            logger.warn("Discarding event due to: {}", e.getMessage());
             acknowledgment.acknowledge();
-            logger.warn("Discarding duplicate order event");
         } catch (Exception e) {
             logger.error("Error creating order", e);
             throw e;

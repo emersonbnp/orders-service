@@ -12,8 +12,11 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 @EnableKafka
@@ -38,13 +41,20 @@ public class KafkaConsumerConfig {
     }
 
     @Bean(ORDER_REQUESTED_EVENT_FACTORY)
-    public ConcurrentKafkaListenerContainerFactory<String, String> createOrderEventFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, String> createOrderEventFactory(
+            DefaultErrorHandler errorHandler) {
         final var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
 
-        factory.setCommonErrorHandler(new DefaultErrorHandler());
+        factory.setCommonErrorHandler(errorHandler);
         factory.setConsumerFactory(consumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 
         return factory;
+    }
+
+    @Bean
+    public DefaultErrorHandler errorHandler(KafkaTemplate<String, String> kafkaTemplate) {
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate);
+        return new DefaultErrorHandler(recoverer, new FixedBackOff(1000L, 3L));
     }
 }
