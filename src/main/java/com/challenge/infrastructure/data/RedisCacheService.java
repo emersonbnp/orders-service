@@ -25,7 +25,12 @@ public class RedisCacheService implements CacheService {
     }
 
     @Override
-    public void set(String key, Integer duplicateCheckHoursTTL) {
+    public void set(String key) {
         redisTemplate.opsForValue().set(key, "", Duration.ofHours(duplicateCheckHoursTTL));
+    }
+
+    @Override
+    public void remove(String key) {
+        redisTemplate.opsForValue().getAndDelete(key);
     }
 }

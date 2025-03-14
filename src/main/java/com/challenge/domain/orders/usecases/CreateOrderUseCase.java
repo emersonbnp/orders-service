@@ -28,14 +28,20 @@ public class CreateOrderUseCase {
         }
         cacheService.set(deduplicationCode);
 
-        var totalPrice = order.getItems()
-                .stream()
-                .map(o -> o.getPrice() * o.getQuantity())
-                .reduce(Double::sum);
-        order.setTotalPrice(totalPrice.orElse(0.0));
+        try {
+            var totalPrice = order.getItems()
+                    .stream()
+                    .map(o -> o.getPrice() * o.getQuantity())
+                    .reduce(Double::sum);
+            order.setTotalPrice(totalPrice.orElse(0.0));
 
-        var orderUuid = orderRepository.saveOrder(order);
-        logger.info("Created order uuid: {}", orderUuid);
-        return orderUuid;
+            var orderUuid = orderRepository.saveOrder(order);
+            logger.info("Created order uuid: {}", orderUuid);
+            return orderUuid;
+        } catch (Exception e) {
+            logger.error("Error creating order", e);
+            cacheService.remove(deduplicationCode);
+            throw e;
+        }
     }
 }
