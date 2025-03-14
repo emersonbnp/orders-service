@@ -2,6 +2,7 @@ package com.challenge.entrypoint.kafka.events;
 
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.models.OrderItem;
+import com.challenge.domain.orders.models.OrderStatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -21,6 +22,7 @@ public record CreateOrderEvent(
         return new Order(
                 customerUuid,
                 sellerUuid,
+                OrderStatusEnum.CREATED,
                 items.stream()
                         .map(o -> new OrderItem(
                                 o.productUuid(),

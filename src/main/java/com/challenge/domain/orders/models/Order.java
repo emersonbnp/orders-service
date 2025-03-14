@@ -1,9 +1,11 @@
 package com.challenge.domain.orders.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Data
 public class Order {
     private String customerUuid;
@@ -12,11 +14,19 @@ public class Order {
     private List<OrderItem> items;
     private Double totalPrice;
 
-    public Order(String customerUuid, String sellerUuid, List<OrderItem> items) {
+    public Order(String customerUuid, String sellerUuid, OrderStatusEnum status, List<OrderItem> items) {
         this.customerUuid = customerUuid;
         this.sellerUuid = sellerUuid;
+        this.status = status;
         this.items = items;
     }
+
+    public Order(String customerUuid, String sellerUuid) {
+        this.customerUuid = customerUuid;
+        this.sellerUuid = sellerUuid;
+    }
+
+
 
     public Order() {
     }

@@ -3,6 +3,7 @@ package com.challenge.domain.orders.usecases;
 import com.challenge.domain.orders.exceptions.DuplicateOrderException;
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.models.OrderItem;
+import com.challenge.domain.orders.models.OrderStatusEnum;
 import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.domain.services.CacheService;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,7 @@ public class TestCreateOrderUseCase {
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
-        var order = new Order(customerUuid, sellerUuid, items);
+        var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
@@ -55,7 +56,7 @@ public class TestCreateOrderUseCase {
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
-        var order = new Order(customerUuid, sellerUuid, items);
+        var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
@@ -76,7 +77,7 @@ public class TestCreateOrderUseCase {
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0), new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
-        var order = new Order(customerUuid, sellerUuid, items);
+        var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
@@ -97,7 +98,7 @@ public class TestCreateOrderUseCase {
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
-        var order = new Order(customerUuid, sellerUuid, items);
+        var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(true);
         when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
@@ -114,7 +115,7 @@ public class TestCreateOrderUseCase {
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
-        var order = new Order(customerUuid, sellerUuid, items);
+        var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         var expectedDuplicationKey = String.format("%s.%s", customerUuid, order.hashCode());
         when(cacheService.exists(any())).thenReturn(false);

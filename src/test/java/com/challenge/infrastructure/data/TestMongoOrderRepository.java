@@ -4,6 +4,7 @@ import com.challenge.infrastructure.data.entities.OrderEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,11 +18,12 @@ import static org.mockito.Mockito.*;
 public class TestMongoOrderRepository {
 
     private final MongoOrderDAO orderDAO = mock(MongoOrderDAO.class);
+    private final MongoTemplate mongoTemplate = mock(MongoTemplate.class);
     private MongoOrderRepository mongoOrderRepository = null;
 
     @BeforeEach
     public void init() {
-        mongoOrderRepository = new MongoOrderRepository(orderDAO);
+        mongoOrderRepository = new MongoOrderRepository(orderDAO, mongoTemplate);
     }
 
     @Test

@@ -2,10 +2,9 @@ package com.challenge.infrastructure.data;
 
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.models.OrderItem;
+import com.challenge.domain.orders.models.OrderStatusEnum;
 import com.challenge.infrastructure.data.entities.OrderEntity;
 import com.challenge.infrastructure.data.entities.OrderItemEntity;
-
-import java.util.UUID;
 
 public enum OrderMapper {
     INSTANCE;
@@ -24,20 +23,24 @@ public enum OrderMapper {
         return new OrderEntity(
                 order.getCustomerUuid(),
                 order.getSellerUuid(),
-                orderItemsEntity
+                order.getStatus(),
+                orderItemsEntity,
+                order.getTotalPrice()
         );
     }
 
     public Order fromOrderEntity(OrderEntity orderEntity) {
         var orderItems = orderEntity.getOrderItems()
                 .stream()
-                .map(o -> new OrderItem(o.getProductUuid().toString(), o.getQuantity(), o.getPrice()))
+                .map(o -> new OrderItem(o.getProductUuid(), o.getQuantity(), o.getPrice()))
                 .toList();
 
         return new Order(
                 orderEntity.getCustomerUuid(),
                 orderEntity.getSellerUuid(),
-                orderItems
+                OrderStatusEnum.valueOf(orderEntity.getStatus()),
+                orderItems,
+                orderEntity.getTotalPrice()
         );
     }
 }
