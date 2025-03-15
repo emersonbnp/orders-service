@@ -6,6 +6,8 @@ import com.challenge.domain.orders.models.OrderStatusEnum;
 import com.challenge.infrastructure.data.entities.OrderEntity;
 import com.challenge.infrastructure.data.entities.OrderItemEntity;
 
+import java.math.RoundingMode;
+
 public enum OrderMapper {
     INSTANCE;
 
@@ -16,7 +18,7 @@ public enum OrderMapper {
                         new OrderItemEntity(
                                 o.getProductUuid(),
                                 o.getQuantity(),
-                                o.getPrice()
+                                o.getPrice().setScale(2, RoundingMode.HALF_UP)
                         )
                 ).toList();
 
@@ -26,14 +28,17 @@ public enum OrderMapper {
                 order.getSellerUuid(),
                 order.getStatus().toString(),
                 orderItemsEntity,
-                order.getTotalPrice()
+                order.getTotalPrice().setScale(2, RoundingMode.HALF_UP)
         );
     }
 
     public Order fromOrderEntity(OrderEntity orderEntity) {
         var orderItems = orderEntity.getOrderItems()
                 .stream()
-                .map(o -> new OrderItem(o.getProductUuid(), o.getQuantity(), o.getPrice()))
+                .map(o -> new OrderItem(
+                        o.getProductUuid(),
+                        o.getQuantity(),
+                        o.getPrice().setScale(2, RoundingMode.HALF_UP)))
                 .toList();
 
         return new Order(
@@ -41,7 +46,7 @@ public enum OrderMapper {
                 orderEntity.getSellerUuid(),
                 OrderStatusEnum.valueOf(orderEntity.getStatus()),
                 orderItems,
-                orderEntity.getTotalPrice()
+                orderEntity.getTotalPrice().setScale(2, RoundingMode.HALF_UP)
         );
     }
 }

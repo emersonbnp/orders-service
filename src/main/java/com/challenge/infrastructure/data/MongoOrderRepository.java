@@ -42,10 +42,10 @@ public class MongoOrderRepository implements OrderRepository {
         Criteria criteria = new Criteria();
 
         List<Criteria> filters = new ArrayList<>();
-        if (customer.isBlank()) {
+        if (customer != null && customer.isBlank()) {
             filters.add(Criteria.where("customerUuid").is(customer));
         }
-        if (!seller.isBlank()) {
+        if (seller != null && !seller.isBlank()) {
             filters.add(Criteria.where("sellerUuid").is(seller));
         }
 
