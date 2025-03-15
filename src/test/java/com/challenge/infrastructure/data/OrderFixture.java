@@ -17,7 +17,7 @@ public class OrderFixture {
     public static final String SELLER_UUID = UUID.randomUUID().toString();
     public static final String PRODUCT_UUID = UUID.randomUUID().toString();
     public static final Integer QUANTITY = 1;
-    public static final BigDecimal PRICE = BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP);
+    public static final BigDecimal PRICE = BigDecimal.valueOf(1.00).setScale(2, RoundingMode.UNNECESSARY);
     public static final OrderStatusEnum STATUS = OrderStatusEnum.CREATED;
 
     private OrderFixture() {
