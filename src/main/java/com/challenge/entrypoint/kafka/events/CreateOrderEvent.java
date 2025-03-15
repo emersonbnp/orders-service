@@ -28,7 +28,8 @@ public record CreateOrderEvent(
                                 o.productUuid(),
                                 o.quantity(),
                                 o.price()
-                        )).toList()
+                        )).toList(),
+                null
         );
     }
 }

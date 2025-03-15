@@ -1,9 +1,6 @@
 package com.challenge.infrastructure.data.entities;
 
-import com.challenge.domain.orders.models.OrderStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Document(collection = "orders")
 public class OrderEntity {
 
@@ -21,28 +19,19 @@ public class OrderEntity {
     private String orderUuid;
 
     @Indexed
+    @NonNull
     private String customerUuid;
 
     @Indexed
+    @NonNull
     private String sellerUuid;
 
+    @NonNull
     private String status;
 
     @Field(name = "items")
+    @NonNull
     private List<OrderItemEntity> orderItems;
 
     private Double totalPrice;
-
-    public OrderEntity(
-            String customerUuid,
-            String sellerUuid,
-            OrderStatusEnum status,
-            List<OrderItemEntity> orderItems,
-            Double totalPrice) {
-        this.customerUuid = customerUuid;
-        this.sellerUuid = sellerUuid;
-        this.status = status.name();
-        this.orderItems = orderItems;
-        this.totalPrice = totalPrice;
-    }
 }

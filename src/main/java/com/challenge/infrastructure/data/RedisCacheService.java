@@ -1,22 +1,22 @@
 package com.challenge.infrastructure.data;
 
 import com.challenge.domain.services.CacheService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
+@RequiredArgsConstructor
 @Service
 public class RedisCacheService implements CacheService {
 
     @Value("${orders.service.cache.duplicate.check.ttl.hours}")
     private Integer duplicateCheckHoursTTL;
+    @NonNull
     private final StringRedisTemplate redisTemplate;
-
-    public RedisCacheService(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 
     @Override
     public boolean exists(String key) {

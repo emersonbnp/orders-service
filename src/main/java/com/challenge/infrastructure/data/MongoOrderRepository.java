@@ -3,6 +3,8 @@ package com.challenge.infrastructure.data;
 import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.infrastructure.data.entities.OrderEntity;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -13,16 +15,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Repository
 public class MongoOrderRepository implements OrderRepository {
 
+    @NonNull
     private final MongoOrderDAO orderDAO;
+    @NonNull
     private final MongoTemplate mongoTemplate;
-
-    public MongoOrderRepository(final MongoOrderDAO orderDAO, final MongoTemplate mongoTemplate) {
-        this.orderDAO = orderDAO;
-        this.mongoTemplate = mongoTemplate;
-    }
 
     @Override
     public String saveOrder(Order order) {
@@ -42,10 +42,10 @@ public class MongoOrderRepository implements OrderRepository {
         Criteria criteria = new Criteria();
 
         List<Criteria> filters = new ArrayList<>();
-        if (order.getCustomerUuid() != null && !order.getCustomerUuid().isBlank()) {
+        if (!order.getCustomerUuid().isBlank()) {
             filters.add(Criteria.where("customerUuid").is(order.getCustomerUuid()));
         }
-        if (order.getSellerUuid() != null && !order.getSellerUuid().isBlank()) {
+        if (!order.getSellerUuid().isBlank()) {
             filters.add(Criteria.where("sellerUuid").is(order.getSellerUuid()));
         }
 

@@ -21,9 +21,10 @@ public enum OrderMapper {
                 ).toList();
 
         return new OrderEntity(
+                null,
                 order.getCustomerUuid(),
                 order.getSellerUuid(),
-                order.getStatus(),
+                order.getStatus().toString(),
                 orderItemsEntity,
                 order.getTotalPrice()
         );

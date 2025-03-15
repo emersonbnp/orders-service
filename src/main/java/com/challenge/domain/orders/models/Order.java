@@ -2,30 +2,29 @@ package com.challenge.domain.orders.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Data
 public class Order {
+    @NonNull
     private String customerUuid;
+    @NonNull
     private String sellerUuid;
+    @NonNull
     private OrderStatusEnum status;
+    @NonNull
     private List<OrderItem> items;
     private Double totalPrice;
 
-    public Order(String customerUuid, String sellerUuid, OrderStatusEnum status, List<OrderItem> items) {
-        this.customerUuid = customerUuid;
-        this.sellerUuid = sellerUuid;
-        this.status = status;
-        this.items = items;
-    }
-
-    public Order(String customerUuid, String sellerUuid) {
+    public Order(@NonNull String customerUuid, @NonNull String sellerUuid) {
         this.customerUuid = customerUuid;
         this.sellerUuid = sellerUuid;
     }
-
 
 
     public Order() {

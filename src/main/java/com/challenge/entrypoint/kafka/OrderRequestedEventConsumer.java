@@ -6,6 +6,8 @@ import com.challenge.domain.orders.usecases.CreateOrderUseCase;
 import com.challenge.domain.services.CacheService;
 import com.challenge.entrypoint.kafka.deserializers.DeserializationException;
 import com.challenge.entrypoint.kafka.events.CreateOrderEvent;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.apache.logging.log4j.LogManager;
@@ -19,18 +21,16 @@ import java.util.UUID;
 
 import static com.challenge.entrypoint.kafka.config.KafkaConsumerConfig.ORDER_REQUESTED_EVENT_FACTORY;
 
+@RequiredArgsConstructor
 @Component
 public class OrderRequestedEventConsumer {
 
+    @NonNull
     private final OrderRepository orderRepository;
+    @NonNull
     private final CacheService cacheService;
     private static final String X_CORRELATION_ID = "X-Correlation-Id";
     private final Logger logger = LogManager.getLogger(this.getClass());
-
-    public OrderRequestedEventConsumer(final OrderRepository orderRepository, CacheService cacheService) {
-        this.orderRepository = orderRepository;
-        this.cacheService = cacheService;
-    }
 
     @KafkaListener(topics = "order_requested_event", groupId = "orders-service", containerFactory = ORDER_REQUESTED_EVENT_FACTORY)
     public void consume(final ConsumerRecord<String, CreateOrderEvent> event, final Acknowledgment acknowledgment) {
