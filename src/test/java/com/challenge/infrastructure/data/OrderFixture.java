@@ -7,6 +7,7 @@ import com.challenge.infrastructure.data.entities.OrderEntity;
 import com.challenge.infrastructure.data.entities.OrderItemEntity;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,14 +17,10 @@ public class OrderFixture {
     public static final String SELLER_UUID = UUID.randomUUID().toString();
     public static final String PRODUCT_UUID = UUID.randomUUID().toString();
     public static final Integer QUANTITY = 1;
-    public static final BigDecimal PRICE = BigDecimal.ONE;
+    public static final BigDecimal PRICE = BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP);
     public static final OrderStatusEnum STATUS = OrderStatusEnum.CREATED;
 
     private OrderFixture() {
-    }
-
-    public static OrderItem instaceOfOrderItem() {
-        return instaceOfOrderItem(null, null, null);
     }
 
     public static OrderItem instaceOfOrderItem(
@@ -56,10 +53,6 @@ public class OrderFixture {
         );
     }
 
-    public static OrderItemEntity instaceOfOrderItemEntity() {
-        return instaceOfOrderItemEntity(null, null, null);
-    }
-
     public static OrderItemEntity instaceOfOrderItemEntity(
             String productUuid,
             Integer quantity,
@@ -89,7 +82,7 @@ public class OrderFixture {
                 sellerUuid != null ? sellerUuid : SELLER_UUID,
                 status != null ? status.name() : STATUS.name(),
                 orderItems != null ? orderItems : List.of(instaceOfOrderItemEntity(null, null, null)),
-                null
+                PRICE
         );
     }
 }

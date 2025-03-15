@@ -6,9 +6,12 @@ import com.challenge.domain.orders.models.OrderItem;
 import com.challenge.domain.orders.models.OrderStatusEnum;
 import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.domain.services.CacheService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,16 +22,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TestCreateOrderUseCase {
 
-    CreateOrderUseCase useCase = null;
-    CacheService cacheService = mock(CacheService.class);
-    OrderRepository orderRepository = mock(OrderRepository.class);
+    @InjectMocks
+    CreateOrderUseCase useCase;
 
-    @BeforeEach
-    public void init() {
-        useCase = new CreateOrderUseCase(cacheService, orderRepository);
-    }
+    @Mock
+    CacheService cacheService;
+
+    @Mock
+    OrderRepository orderRepository;
 
     @Test
     public void should_calculate_total_price_for_unique_single_item() {
@@ -100,9 +104,7 @@ public class TestCreateOrderUseCase {
         var sellerUuid = UUID.randomUUID().toString();
         var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
-        var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(true);
-        when(orderRepository.saveOrder(any())).thenReturn(orderUuid);
 
         // When and Then
         assertThrows(DuplicateOrderException.class, () -> {

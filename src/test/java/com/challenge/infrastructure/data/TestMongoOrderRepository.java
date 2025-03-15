@@ -1,11 +1,15 @@
 package com.challenge.infrastructure.data;
 
 import com.challenge.infrastructure.data.entities.OrderEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,21 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TestMongoOrderRepository {
 
-    private final MongoOrderDAO orderDAO = mock(MongoOrderDAO.class);
-    private final MongoTemplate mongoTemplate = mock(MongoTemplate.class);
-    private MongoOrderRepository mongoOrderRepository = null;
-
-    @BeforeEach
-    public void init() {
-        mongoOrderRepository = new MongoOrderRepository(orderDAO, mongoTemplate);
-    }
+    @InjectMocks
+    private MongoOrderRepository mongoOrderRepository;
+    @Mock
+    private MongoOrderDAO orderDAO;
+    @Mock
+    private MongoTemplate mongoTemplate;
 
     @Test
     public void should_save_order_and_return_entity_uuid() {
         // Given
         var order = OrderFixture.instanceOfOrder();
+        order.setTotalPrice(PRICE);
         when(orderDAO.save(any())).thenReturn(OrderFixture.instanceOfOrderEntity());
 
         // When
@@ -43,6 +47,7 @@ public class TestMongoOrderRepository {
     public void should_save_order_with_correct_values() {
         // Given
         var order = OrderFixture.instanceOfOrder();
+        order.setTotalPrice(BigDecimal.ONE);
         when(orderDAO.save(any())).thenReturn(OrderFixture.instanceOfOrderEntity());
 
         // When
@@ -71,10 +76,10 @@ public class TestMongoOrderRepository {
         var order = mongoOrderRepository.getOrderById(UUID.randomUUID().toString());
 
         // Then
-        assertEquals(CUSTOMER_UUID.toString(), order.orElseThrow().getCustomerUuid());
-        assertEquals(SELLER_UUID.toString(), order.orElseThrow().getSellerUuid());
+        assertEquals(CUSTOMER_UUID, order.orElseThrow().getCustomerUuid());
+        assertEquals(SELLER_UUID, order.orElseThrow().getSellerUuid());
 
-        assertEquals(PRODUCT_UUID.toString(), order.orElseThrow().getItems().getFirst().getProductUuid());
+        assertEquals(PRODUCT_UUID, order.orElseThrow().getItems().getFirst().getProductUuid());
         assertEquals(QUANTITY, order.orElseThrow().getItems().getFirst().getQuantity());
         assertEquals(PRICE, order.orElseThrow().getItems().getFirst().getPrice());
     }
