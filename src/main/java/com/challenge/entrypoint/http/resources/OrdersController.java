@@ -1,6 +1,5 @@
 package com.challenge.entrypoint.http.resources;
 
-import com.challenge.domain.orders.models.Order;
 import com.challenge.domain.orders.repository.OrderRepository;
 import com.challenge.entrypoint.http.responses.GetOrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.security.InvalidParameterException;
 
 @RequiredArgsConstructor
 @Tag(name = "Orders API", description = "Manage orders")
@@ -29,14 +28,13 @@ public class OrdersController {
 
     @Operation(summary = "Get orders with filter", description = "Retrieve a list of orders")
     @GetMapping
-    public ResponseEntity getOrdersByFilter(
+    public ResponseEntity<GetOrderResponse> getOrdersByFilter(
             @RequestParam(required = false) String customer,
             @RequestParam(required = false) String seller
     ) {
         logger.info("Fetching orders");
         if (customer == null && seller == null) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "At least one of customer or seller is required"));
+            throw new InvalidParameterException("At least customer or seller filter is required");
         }
         var orders = orderRepository.getOrderByFilter(customer, seller);
         return ResponseEntity.ok(GetOrderResponse.of(orders));
