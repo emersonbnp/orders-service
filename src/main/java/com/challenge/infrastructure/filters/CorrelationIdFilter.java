@@ -2,6 +2,7 @@ package com.challenge.infrastructure.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class CorrelationIdFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         String correlationId = httpServletRequest.getHeader(CORRELATION_ID_HEADER);
-        if (correlationId == null || correlationId.isBlank()) {
+        if (StringUtils.isBlank(correlationId)) {
             correlationId = UUID.randomUUID().toString();
         }
         ThreadContext.put("correlationId", correlationId);

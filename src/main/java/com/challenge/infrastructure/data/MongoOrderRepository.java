@@ -7,6 +7,7 @@ import com.challenge.domain.orders.repository.Paging;
 import com.challenge.infrastructure.data.entities.OrderEntity;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,10 +45,10 @@ public class MongoOrderRepository implements OrderRepository {
         Criteria criteria = new Criteria();
 
         List<Criteria> filters = new ArrayList<>();
-        if (orderFilter.customer() != null && orderFilter.customer().isBlank()) {
+        if (StringUtils.isNotBlank(orderFilter.customer())) {
             filters.add(Criteria.where("customerUuid").is(orderFilter.customer()));
         }
-        if (orderFilter.seller() != null && !orderFilter.seller().isBlank()) {
+        if (StringUtils.isNotBlank(orderFilter.seller())) {
             filters.add(Criteria.where("sellerUuid").is(orderFilter.seller()));
         }
 
