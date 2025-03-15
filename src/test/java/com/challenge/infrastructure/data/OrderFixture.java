@@ -6,6 +6,7 @@ import com.challenge.domain.orders.models.OrderStatusEnum;
 import com.challenge.infrastructure.data.entities.OrderEntity;
 import com.challenge.infrastructure.data.entities.OrderItemEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class OrderFixture {
     public static final String SELLER_UUID = UUID.randomUUID().toString();
     public static final String PRODUCT_UUID = UUID.randomUUID().toString();
     public static final Integer QUANTITY = 1;
-    public static final Double PRICE = 1.0;
+    public static final BigDecimal PRICE = BigDecimal.ONE;
     public static final OrderStatusEnum STATUS = OrderStatusEnum.CREATED;
 
     private OrderFixture() {
@@ -28,7 +29,7 @@ public class OrderFixture {
     public static OrderItem instaceOfOrderItem(
             String productUuid,
             Integer quantity,
-            Double price
+            BigDecimal price
     ) {
         return new OrderItem(
                 productUuid != null ? productUuid : PRODUCT_UUID,
@@ -62,7 +63,7 @@ public class OrderFixture {
     public static OrderItemEntity instaceOfOrderItemEntity(
             String productUuid,
             Integer quantity,
-            Double price
+            BigDecimal price
     ) {
         return new OrderItemEntity(
                 productUuid != null ? productUuid : PRODUCT_UUID,

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 public class CreateOrderUseCase {
 
@@ -30,9 +32,9 @@ public class CreateOrderUseCase {
         try {
             var totalPrice = order.getItems()
                     .stream()
-                    .map(o -> o.getPrice() * o.getQuantity())
-                    .reduce(Double::sum);
-            order.setTotalPrice(totalPrice.orElse(0.0));
+                    .map(o -> o.getPrice().multiply(BigDecimal.valueOf(o.getQuantity())))
+                    .reduce((item, acc) -> acc.add(item));
+            order.setTotalPrice(totalPrice.orElse(BigDecimal.valueOf(0.0)));
 
             var orderUuid = orderRepository.saveOrder(order);
             logger.info("Created order uuid: {}", orderUuid);

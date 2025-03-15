@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
@@ -47,7 +48,7 @@ public class TestCreateOrderUseCase {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).saveOrder(orderCaptor.capture());
 
-        assertEquals(1, orderCaptor.getValue().getTotalPrice());
+        assertEquals(BigDecimal.ONE, orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -55,7 +56,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 2, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
@@ -68,7 +69,7 @@ public class TestCreateOrderUseCase {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).saveOrder(orderCaptor.capture());
 
-        assertEquals(2, orderCaptor.getValue().getTotalPrice());
+        assertEquals(BigDecimal.TWO, orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -76,7 +77,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0), new OrderItem(UUID.randomUUID().toString(), 2, 1.0));
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, BigDecimal.ONE), new OrderItem(UUID.randomUUID().toString(), 2, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(false);
@@ -89,7 +90,7 @@ public class TestCreateOrderUseCase {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).saveOrder(orderCaptor.capture());
 
-        assertEquals(3, orderCaptor.getValue().getTotalPrice());
+        assertEquals(BigDecimal.valueOf(3), orderCaptor.getValue().getTotalPrice());
     }
 
     @Test
@@ -97,7 +98,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         when(cacheService.exists(any())).thenReturn(true);
@@ -114,7 +115,7 @@ public class TestCreateOrderUseCase {
         // Given
         var customerUuid = UUID.randomUUID().toString();
         var sellerUuid = UUID.randomUUID().toString();
-        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, 1.0));
+        var items = List.of(new OrderItem(UUID.randomUUID().toString(), 1, BigDecimal.ONE));
         var order = new Order(customerUuid, sellerUuid, OrderStatusEnum.CREATED, items);
         var orderUuid = UUID.randomUUID().toString();
         var expectedDuplicationKey = String.format("%s.%s", customerUuid, order.hashCode());

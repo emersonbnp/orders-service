@@ -1,4 +1,6 @@
 package com.challenge.entrypoint.http.responses;
 
-public record OrderItemDto(String productUuid, Integer quantity, Double price) {
+import java.math.BigDecimal;
+
+public record OrderItemDto(String productUuid, Integer quantity, BigDecimal price) {
 }

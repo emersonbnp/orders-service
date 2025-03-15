@@ -1,5 +1,6 @@
 package com.challenge.entrypoint.http.responses;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record OrderDto(
@@ -7,7 +8,7 @@ public record OrderDto(
         String sellerUuid,
         String status,
         List<OrderItemDto> items,
-        Double totalPrice
+        BigDecimal totalPrice
 ) {
 }
 

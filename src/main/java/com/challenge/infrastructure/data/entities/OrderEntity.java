@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -33,5 +34,5 @@ public class OrderEntity {
     @NonNull
     private List<OrderItemEntity> orderItems;
 
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 }

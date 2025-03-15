@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class Order {
     private OrderStatusEnum status;
     @NonNull
     private List<OrderItem> items;
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     public Order(@NonNull String customerUuid, @NonNull String sellerUuid) {
         this.customerUuid = customerUuid;
