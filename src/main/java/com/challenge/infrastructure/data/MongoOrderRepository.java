@@ -38,15 +38,15 @@ public class MongoOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<Order> getOrderByExample(Order order) {
+    public List<Order> getOrderByFilter(String customer, String seller) {
         Criteria criteria = new Criteria();
 
         List<Criteria> filters = new ArrayList<>();
-        if (!order.getCustomerUuid().isBlank()) {
-            filters.add(Criteria.where("customerUuid").is(order.getCustomerUuid()));
+        if (customer.isBlank()) {
+            filters.add(Criteria.where("customerUuid").is(customer));
         }
-        if (!order.getSellerUuid().isBlank()) {
-            filters.add(Criteria.where("sellerUuid").is(order.getSellerUuid()));
+        if (!seller.isBlank()) {
+            filters.add(Criteria.where("sellerUuid").is(seller));
         }
 
         if (!filters.isEmpty()) {

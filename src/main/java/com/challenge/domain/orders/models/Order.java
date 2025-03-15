@@ -22,13 +22,9 @@ public class Order {
     private List<OrderItem> items;
     private BigDecimal totalPrice;
 
-    public Order(@NonNull String customerUuid, @NonNull String sellerUuid) {
+    public Order(String customerUuid, String sellerUuid) {
         this.customerUuid = customerUuid;
         this.sellerUuid = sellerUuid;
-    }
-
-
-    public Order() {
     }
 
     // interpolates customer uuid with hashcode to ensure no collision

@@ -38,7 +38,7 @@ public class OrdersController {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "At least one of customer or seller is required"));
         }
-        var orders = orderRepository.getOrderByExample(new Order(customer, seller));
+        var orders = orderRepository.getOrderByFilter(customer, seller);
         return ResponseEntity.ok(GetOrderResponse.of(orders));
     }
 }
