@@ -10,5 +10,5 @@ public interface OrderRepository {
 
     Optional<Order> getOrderById(String orderId);
 
-    List<Order> getOrderByFilter(String customer, String seller);
+    List<Order> getOrderByFilter(OrderFilter filter, Paging paging);
 }

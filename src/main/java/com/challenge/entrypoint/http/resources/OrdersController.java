@@ -1,6 +1,8 @@
 package com.challenge.entrypoint.http.resources;
 
+import com.challenge.domain.orders.repository.OrderFilter;
 import com.challenge.domain.orders.repository.OrderRepository;
+import com.challenge.domain.orders.repository.Paging;
 import com.challenge.entrypoint.http.responses.GetOrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,13 +32,17 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<GetOrderResponse> getOrdersByFilter(
             @RequestParam(required = false) String customer,
-            @RequestParam(required = false) String seller
+            @RequestParam(required = false) String seller,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         logger.info("Fetching orders");
         if (customer == null && seller == null) {
             throw new InvalidParameterException("At least customer or seller filter is required");
         }
-        var orders = orderRepository.getOrderByFilter(customer, seller);
+        var orders = orderRepository.getOrderByFilter(
+                new OrderFilter(customer, seller),
+                new Paging(page, size));
         return ResponseEntity.ok(GetOrderResponse.of(orders));
     }
 }

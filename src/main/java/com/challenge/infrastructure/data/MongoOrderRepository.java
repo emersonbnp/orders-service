@@ -1,7 +1,9 @@
 package com.challenge.infrastructure.data;
 
 import com.challenge.domain.orders.models.Order;
+import com.challenge.domain.orders.repository.OrderFilter;
 import com.challenge.domain.orders.repository.OrderRepository;
+import com.challenge.domain.orders.repository.Paging;
 import com.challenge.infrastructure.data.entities.OrderEntity;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +40,15 @@ public class MongoOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<Order> getOrderByFilter(String customer, String seller) {
+    public List<Order> getOrderByFilter(OrderFilter orderFilter, Paging paging) {
         Criteria criteria = new Criteria();
 
         List<Criteria> filters = new ArrayList<>();
-        if (customer != null && customer.isBlank()) {
-            filters.add(Criteria.where("customerUuid").is(customer));
+        if (orderFilter.customer() != null && orderFilter.customer().isBlank()) {
+            filters.add(Criteria.where("customerUuid").is(orderFilter.customer()));
         }
-        if (seller != null && !seller.isBlank()) {
-            filters.add(Criteria.where("sellerUuid").is(seller));
+        if (orderFilter.seller() != null && !orderFilter.seller().isBlank()) {
+            filters.add(Criteria.where("sellerUuid").is(orderFilter.seller()));
         }
 
         if (!filters.isEmpty()) {
@@ -54,6 +56,9 @@ public class MongoOrderRepository implements OrderRepository {
         }
 
         Query query = new Query(criteria);
+        query.skip((long) paging.page() * paging.size());
+        query.limit(paging.size());
+
         var result = mongoTemplate.find(query, OrderEntity.class);
         return result.stream()
                 .map(OrderMapper.INSTANCE::fromOrderEntity)
