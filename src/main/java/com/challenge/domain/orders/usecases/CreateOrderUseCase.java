@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -20,6 +21,7 @@ public class CreateOrderUseCase {
     private final OrderRepository orderRepository;
     private final Logger logger = LogManager.getLogger(this.getClass());
 
+    @Transactional
     public void execute(Order order) throws DuplicateOrderException {
         logger.debug("Creating order: {}", order);
         var deduplicationCode = order.orderDeduplicationCode();
