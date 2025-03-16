@@ -63,7 +63,7 @@ services:
       bash -c
         "sleep 5s &&
         kafka-topics --create --topic=order_requested_event --if-not-exists --bootstrap-server=kafka-broker:19092" &&
-        kafka-topics --create --topic=order_requested_event.DLT --if-not-exists --bootstrap-server=kafka-broker:19092"
+        kafka-topics --create --topic=order_requested_event-dlt --if-not-exists --bootstrap-server=kafka-broker:19092"
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:latest
