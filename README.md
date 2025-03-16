@@ -53,10 +53,8 @@ Or just use the swagger UI by accessing `http://localhost:8080/swagger-ui.html`
 ## Improvements
 A few improvements that could be done both on API and event consumer:
 * Add Avro as Kafka schema registry
-* Add pagination to `/v1/orders` endpoint
 * Separate the API and event consumer in two different independently deployable modules
   * This was made easier by leveraging DDD 
   * Also, the components packages were organized so that it would be easier to split later
 * Create a Dockerfile to run the application without Java 23
 * Add lint configuration
-* Truncate decimal numbers
