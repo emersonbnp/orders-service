@@ -22,8 +22,8 @@ public class CreateOrderEventDeserializer implements Deserializer<CreateOrderEve
         try {
             return objectMapper.readValue(data, CreateOrderEvent.class);
         } catch (Exception e) {
-            logger.error("Failed deserializing: {}", new String(data));
-            throw new DeserializationException("Error deserializing CreateOrderEvent", e);
+            logger.error("Failed deserializing: {}", new String(data), e);
+            return null;
         }
     }
 
