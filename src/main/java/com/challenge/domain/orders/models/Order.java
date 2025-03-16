@@ -1,9 +1,6 @@
 package com.challenge.domain.orders.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +17,7 @@ public class Order {
     private OrderStatusEnum status;
     @NonNull
     private List<OrderItem> items;
+    @EqualsAndHashCode.Exclude()
     private BigDecimal totalPrice;
 
     public Order(String customerUuid, String sellerUuid) {
