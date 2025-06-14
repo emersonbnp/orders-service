@@ -10,6 +10,7 @@ jobs:
   build-and-deploy:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
+    environment: dev
     env:
       ENVIRONMENT: ${{ vars.ENVIRONMENT }}
       REGISTRY_URL: ${{ vars.REGISTRY_URL }}
