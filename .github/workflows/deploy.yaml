@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build and Deploy Pipeline
 
 on:
   push:
@@ -19,8 +19,8 @@ jobs:
       RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
       CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
 
-    # Clone project
     steps:
+      # Clone project
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -36,7 +36,7 @@ jobs:
       # Build image
       - name: Build Docker image
         run: |
-          docker build --platform=linux/amd64 --provenance false --no-cache -t $REGISTRY_URL:$IMAGE_TAG .
+          docker build --platform=linux/amd64 --provenance false --no-cache -t "$REGISTRY_URL:$IMAGE_TAG" .
 
       # Push to ACR
       - name: Push Docker image
