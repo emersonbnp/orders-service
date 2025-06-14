@@ -36,7 +36,7 @@ jobs:
       # Build image
       - name: Build Docker image
         run: |
-          docker build --platform=linux/amd64 --provenance false --no-cache -t :$IMAGE_TAG .
+          docker build --platform=linux/amd64 --provenance false --no-cache -t $REGISTRY_URL:$IMAGE_TAG .
 
       # Push to ACR
       - name: Push Docker image
@@ -48,4 +48,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deploying $REGISTRY_URL:$IMAGE_TAG"
-          # az containerapp update --resource-group $RESOURCE_GROUP --name $CONTAINER_NAME --image $IMAGE_NAME
+          # az containerapp update --resource-group $RESOURCE_GROUP --name $CONTAINER_NAME --image $REGISTRY_URL:$IMAGE_TAG
