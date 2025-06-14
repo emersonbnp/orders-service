@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - '**/dev-*'
+      - 'dev-*'
+
+jobs:
+  build-and-deploy:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+      REGISTRY_URL: ${{ vars.REGISTRY_URL }}
+      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      IMAGE_TAG: ${{ github.ref_name }}
+      RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+      CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+
+    # Clone project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login to ACR
+      - name: Log in to Docker registry
+        run: |
+          echo "Logging into registry"
+          # az acr login --name $ENVIRONMENT
+
+      # Build image
+      - name: Build Docker image
+        run: |
+          docker build --platform=linux/amd64 --provenance false --no-cache -t :$IMAGE_TAG .
+
+      # Push to ACR
+      - name: Push Docker image
+        run: |
+          echo "Pushing $REGISTRY_URL:$IMAGE_TAG"
+          # docker push $REGISTRY_URL:$IMAGE_TAG
+
+      # Deploy
+      - name: Deploy
+        run: |
+          echo "Deploying $REGISTRY_URL:$IMAGE_TAG"
+          # az containerapp update --resource-group $RESOURCE_GROUP --name $CONTAINER_NAME --image $IMAGE_NAME
