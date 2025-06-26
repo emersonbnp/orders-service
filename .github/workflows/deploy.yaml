@@ -1,15 +1,19 @@
-name: CI/CD Pipeline
+name: Build and Deploy Pipeline
 
 on:
-  push:
-    branches:
-      - '**/dev-*'
-      - 'dev-*'
-
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Select branch'
+        required: true
+        type: choice
+        options:
+          - main
 jobs:
   build-and-deploy:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
+    environment: dev
     env:
       ENVIRONMENT: ${{ vars.ENVIRONMENT }}
       REGISTRY_URL: ${{ vars.REGISTRY_URL }}
@@ -19,8 +23,8 @@ jobs:
       RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
       CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
 
-    # Clone project
     steps:
+      # Clone project
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -36,7 +40,7 @@ jobs:
       # Build image
       - name: Build Docker image
         run: |
-          docker build --platform=linux/amd64 --provenance false --no-cache -t :$IMAGE_TAG .
+          docker build --platform=linux/amd64 --provenance false --no-cache -t "$REGISTRY_URL:$IMAGE_TAG" .
 
       # Push to ACR
       - name: Push Docker image
@@ -48,4 +52,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deploying $REGISTRY_URL:$IMAGE_TAG"
-          # az containerapp update --resource-group $RESOURCE_GROUP --name $CONTAINER_NAME --image $IMAGE_NAME
+          # az containerapp update --resource-group $RESOURCE_GROUP --name $CONTAINER_NAME --image $REGISTRY_URL:$IMAGE_TAG
