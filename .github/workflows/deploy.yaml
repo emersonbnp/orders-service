@@ -2,13 +2,7 @@ name: Build and Deploy Pipeline
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Select branch'
-        required: true
-        type: choice
-        options:
-          - main
+
 jobs:
   build-and-deploy:
     name: Build & Push Docker Image
